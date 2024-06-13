@@ -8,7 +8,7 @@ class ExpenseAPI {
   }
 
   async getList() {
-    const response = await this.#client.get();
+    const response = await this.#client.get("");
     return response.data;
   }
 

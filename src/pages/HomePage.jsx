@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import expenseApi from "../api/expense.api";
-import { Input } from "../components/Input";
+import RecordForm from "../components/RecordForm";
 import { RecordList } from "../components/RecordList";
 import LocalStorage, { KEY } from "../utils/LocalStorage";
 import useLoginStore from "../zustand/useLoginStore";
@@ -14,10 +14,9 @@ import {
 } from "./HomePage.styled";
 
 export function HomePage() {
-  const [date, setDate] = useState(new Date().toISOString().slice(0, 10));
-  const [item, setItem] = useState("");
-  const [amount, setAmount] = useState("");
-  const [description, setDescription] = useState("");
+  const refInputs = useRef([]);
+  const intialRecord = { date: new Date().toISOString().slice(0, 10) };
+
   const [month, setMonth] = useState(Number(LocalStorage.get(KEY._02_MONTH)));
   const [records, setRecords] = useState([]);
 
@@ -36,9 +35,6 @@ export function HomePage() {
 
   useEffect(() => {
     LocalStorage.set(KEY._02_MONTH, month);
-    if (isSuccess) {
-      setRecords(recordList);
-    }
 
     setRecords((list) =>
       month
@@ -49,7 +45,10 @@ export function HomePage() {
     );
   }, [month]);
 
-  const handleSaveRecord = () => {
+  const handleSaveRecord = (refs) => {
+    const item = refs.current[1].value;
+    const amount = refs.current[2].value;
+
     if (!item || !amount) {
       alert("유효한 항목, 금액을 입력해주세요.");
       return;
@@ -57,27 +56,20 @@ export function HomePage() {
 
     expenseApi.add(
       {
-        date,
+        date: refs.current[0].value,
         item,
         amount,
-        description,
+        description: refs.current[3].value,
       },
       user
     );
-
-    setItem("");
-    setAmount("");
-    setDescription("");
   };
 
   return (
     <HomePageWrppaer>
       <SectionCreateCashRecord>
-        <Input label="날짜" value={date} setValue={setDate} type="date" />
-        <Input label="항목" value={item} setValue={setItem} />
-        <Input label="금액" value={amount} setValue={setAmount} type="number" />
-        <Input label="내용" value={description} setValue={setDescription} />
-        <button onClick={handleSaveRecord}>저장</button>
+        <RecordForm refer={refInputs} record={intialRecord} />
+        <button onClick={() => handleSaveRecord(refInputs)}>저장</button>
       </SectionCreateCashRecord>
       <SectionSelectingMonth className="section-select-month">
         <div>

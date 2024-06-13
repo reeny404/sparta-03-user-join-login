@@ -3,14 +3,14 @@ import { useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import expenseApi from "../api/expense.api";
 import { Button } from "../components/Button";
-import { Input } from "../components/Input";
+import RecordForm from "../components/RecordForm";
 import useLoginStore from "../zustand/useLoginStore";
 import { DetailPageWrapper } from "./DetailPage.styled";
 
 export function DetailPage() {
   const param = useParams();
   const recordId = param.recordId;
-  const refInput = useRef([]);
+  const refInputs = useRef([]);
   const navigate = useNavigate();
   const user = useLoginStore((state) => state.user);
 
@@ -34,10 +34,10 @@ export function DetailPage() {
       .update(
         {
           ...record,
-          date: refInput.current[0].value,
-          item: refInput.current[1].value,
-          amount: refInput.current[2].value,
-          description: refInput.current[3].value,
+          date: refInputs.current[0].value,
+          item: refInputs.current[1].value,
+          amount: refInputs.current[2].value,
+          description: refInputs.current[3].value,
         },
         user
       )
@@ -62,27 +62,7 @@ export function DetailPage() {
 
   return (
     <DetailPageWrapper>
-      <Input
-        label="날짜"
-        refer={(ref) => (refInput.current[0] = ref)}
-        initialValue={record.date}
-        type="date"
-      />
-      <Input
-        label="항목"
-        refer={(ref) => (refInput.current[1] = ref)}
-        initialValue={record.item}
-      />
-      <Input
-        label="금액"
-        refer={(ref) => (refInput.current[2] = ref)}
-        initialValue={record.amount}
-      />
-      <Input
-        label="내용"
-        refer={(ref) => (refInput.current[3] = ref)}
-        initialValue={record.description}
-      />
+      <RecordForm record={record} refer={refInputs} />
       <div>
         {record.userId === user.id ? (
           <>

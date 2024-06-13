@@ -1,9 +1,9 @@
-import React from "react";
 import ReactDOM from "react-dom/client";
-import Week2 from "./App";
+import Week3 from "./Week3";
+import "./index.css";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <React.StrictMode>
-    <Week2 />
-  </React.StrictMode>
+  // <React.StrictMode>
+  <Week3 />
+  // </React.StrictMode>
 );

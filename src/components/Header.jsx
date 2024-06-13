@@ -1,39 +1,23 @@
-import { useCallback, useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { useLoaderData, useNavigate } from "react-router";
+import { useEffect } from "react";
+import { useLoaderData } from "react-router";
 import { Link } from "react-router-dom";
-import { logIn, logOut } from "../redux/reducers/auth.reducer";
+import useLoginStore from "../zustand/useLoginStore";
+import { HeaderGuest } from "./HeaderGuest";
 
 function Header() {
-  const navigate = useNavigate();
   const user = useLoaderData();
-  const dispatch = useDispatch();
-
-  const handleLogOut = useCallback(() => {
-    const action = logOut();
-    dispatch(action);
-  }, []);
+  const { logIn, logOut } = useLoginStore((state) => state);
 
   useEffect(() => {
-    if (!user) {
-      navigate("/signIn");
-    } else {
-      const action = logIn(user);
-      dispatch(action);
+    if (user) {
+      logIn(user);
     }
   }, []);
 
   if (!user) {
-    return (
-      <header className="w-full bg-gray-700 text-white px-4 py-3 flex flex-row box-border justify-center items-center">
-        <span className="text-left w-full">
-          <Link to="/" className="mr-4">
-            HOME
-          </Link>
-        </span>
-      </header>
-    );
+    return <HeaderGuest />;
   }
+
   return (
     <header className="w-full bg-gray-700 text-white px-4 py-2 flex flex-row box-border justify-center items-center">
       <div className="text-left w-1/2">
@@ -50,7 +34,7 @@ function Header() {
           {user.nickname}
         </span>
         <button
-          onClick={handleLogOut}
+          onClick={logOut}
           className="rounded bg-red-500 py-1.5 px-2 text-sm ml-4"
         >
           로그아웃

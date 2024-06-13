@@ -1,11 +1,8 @@
-// import InitialRecords from "../../InitialRecords";
-import db from "../../../db.json";
+import InitialRecords from "../../InitialRecords";
 
 export const ADD_RECORD = "ADD_RECORD";
 export const UPDATE_RECORD = "UPDATE_RECORD";
 export const DELETE_RECORD = "DELETE_RECORD";
-
-const InitialRecords = db.expenses;
 
 const spendingsReducer = (prevState = InitialRecords, action) => {
   const newRecord = action.payload;

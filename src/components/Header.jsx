@@ -8,8 +8,6 @@ function Header() {
   const navigate = useNavigate();
   const user = useLoaderData();
   const dispatch = useDispatch();
-  // const { user } = useSelector((state) => state.auth);
-  console.log("header", user);
 
   const handleLogOut = useCallback(() => {
     const action = logOut();
@@ -37,21 +35,19 @@ function Header() {
     );
   }
   return (
-    <header className="w-full bg-gray-700 text-white px-4 py-3 flex flex-row box-border justify-center items-center">
-      <span className="text-left w-1/2">
+    <header className="w-full bg-gray-700 text-white px-4 py-2 flex flex-row box-border justify-center items-center">
+      <div className="text-left w-1/2">
         <Link to="/" className="mr-4">
           HOME
         </Link>
         <Link to="/profile" className="">
           내 프로필
         </Link>
-      </span>
-      <span className="text-right w-1/2">
-        <span className="">
-          <span className="">
-            <img src={user.avatar} />
-          </span>
-          <span>{user.nickname}</span>
+      </div>
+      <div className="text-right w-1/2 flex flex-row justify-end items-center">
+        <img src={user.avatar} className="max-w-10 max-h-10 rounded-full" />
+        <span className="pl-2 text-ellipsis overflow-hidden whitespace-nowrap break-words max-w-40">
+          {user.nickname}
         </span>
         <button
           onClick={handleLogOut}
@@ -59,7 +55,7 @@ function Header() {
         >
           로그아웃
         </button>
-      </span>
+      </div>
     </header>
   );
 }

@@ -33,11 +33,7 @@ function SignInPage() {
       .signIn(id, pw)
       .then((user) => {
         LocalStorage.set(KEY._03_ACCESS_TOKEN, user.accessToken);
-        const action = logIn({
-          id: user.userId,
-          nickname: user.nickname,
-          avatar: user.avatar,
-        });
+        const action = logIn({ ...user, id: user.userId });
         dispatch(action);
         navigate("/");
       })

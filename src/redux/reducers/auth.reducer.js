@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import userAPI from "../../api/user.api";
 
 const authSlice = createSlice({
   initialState: { user: null },
@@ -10,10 +11,13 @@ const authSlice = createSlice({
         id: user.id,
         nickname: user.nickname,
         avatar: user.avatar,
+        accessToken: user.accessToken,
       };
+      userAPI.setAcessToken(user.accessToken);
     },
     logOut: (state) => {
       state.user = null;
+      userAPI.setAcessToken(null);
     },
   },
 });

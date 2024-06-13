@@ -9,9 +9,7 @@ export async function initUserLoader() {
 
   const user = await userAPI
     .getUserInfo(token)
-    .then((response) => {
-      return response;
-    })
+    .then((user) => ({ ...user, accessToken: token }))
     .catch((e) => {
       LocalStorage.set(KEY._03_ACCESS_TOKEN, "");
       throw e;

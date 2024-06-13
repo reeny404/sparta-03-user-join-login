@@ -36,18 +36,28 @@ class UserAPI {
     return response.data;
   }
 
-  async setProfile(accessToken, img, nickname) {
+  async setProfile(nickname, img, accessToken) {
+    if (accessToken) {
+      this.setAcessToken(accessToken);
+    }
+    console.log(this.#client.defaults.headers);
     const form = new FormData();
     form.append("avatar", img);
     form.append("nickname", nickname);
 
-    const response = await axios.patch("/profile", form, {
+    const response = await this.#client.patch("/profile", form, {
       headers: {
         "Content-Type": "multipart/form-data",
-        Authorization: `Bearer ${accessToken}`,
+        // Authorization: `Bearer ${accessToken}`,
       },
     });
     return response.data;
+  }
+
+  setAcessToken(accessToken) {
+    this.#client.defaults.headers.common.Authorization = accessToken
+      ? `Bearer ${accessToken}`
+      : "";
   }
 }
 

@@ -1,64 +1,97 @@
-import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useQuery } from "@tanstack/react-query";
+import { useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import expenseApi from "../api/expense.api";
 import { Button } from "../components/Button";
 import { Input } from "../components/Input";
-import {
-  DELETE_RECORD,
-  UPDATE_RECORD,
-} from "../redux/reducers/spendings.reducer";
+import useLoginStore from "../zustand/useLoginStore";
 import { DetailPageWrapper } from "./DetailPage.styled";
 
 export function DetailPage() {
   const param = useParams();
   const recordId = param.recordId;
-  const records = useSelector((state) => state.spendings);
-  const record = records.find((data) => data.id === recordId) ?? {};
-
-  const [date, setDate] = useState(record.date);
-  const [item, setItem] = useState(record.item);
-  const [amount, setAmount] = useState(record.amount);
-  const [description, setDescription] = useState(record.description);
+  const refInput = useRef([]);
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const user = useLoginStore((state) => state.user);
 
-  if (!record) {
-    return <div>조회할 수 없는 데이터입니다. ({recordId}).</div>;
+  const {
+    data: record,
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ["records", { id: recordId }],
+    queryFn: () => expenseApi.get(recordId),
+  });
+
+  if (!record || isError) {
+    return <div>조회할 수 없는 데이터입니다.</div>;
+  } else if (isLoading) {
+    return <>loading...</>;
   }
+
+  const handleUpdate = () => {
+    expenseApi
+      .update(
+        {
+          ...record,
+          date: refInput.current[0].value,
+          item: refInput.current[1].value,
+          amount: refInput.current[2].value,
+          description: refInput.current[3].value,
+        },
+        user
+      )
+      .then(() => {
+        navigate("/");
+      })
+      .catch((e) => {
+        alert(e.message);
+      });
+  };
+
+  const handleDelete = (record) => {
+    expenseApi
+      .delete(record, user)
+      .then(() => {
+        navigate("/");
+      })
+      .catch((e) => {
+        alert(e.message);
+      });
+  };
 
   return (
     <DetailPageWrapper>
-      <Input label="날짜" value={date} setValue={setDate} type="date" />
-      <Input label="항목" value={item} setValue={setItem} />
-      <Input label="금액" value={amount} setValue={setAmount} />
-      <Input label="내용" value={description} setValue={setDescription} />
+      <Input
+        label="날짜"
+        refer={(ref) => (refInput.current[0] = ref)}
+        initialValue={record.date}
+        type="date"
+      />
+      <Input
+        label="항목"
+        refer={(ref) => (refInput.current[1] = ref)}
+        initialValue={record.item}
+      />
+      <Input
+        label="금액"
+        refer={(ref) => (refInput.current[2] = ref)}
+        initialValue={record.amount}
+      />
+      <Input
+        label="내용"
+        refer={(ref) => (refInput.current[3] = ref)}
+        initialValue={record.description}
+      />
       <div>
-        <Button
-          text="수정"
-          handleClick={() => {
-            dispatch({
-              type: UPDATE_RECORD,
-              payload: {
-                ...record,
-                date,
-                item,
-                amount,
-                description,
-              },
-            });
-            navigate("/");
-          }}
-        />
-        <Button
-          text="삭제"
-          handleClick={() => {
-            dispatch({
-              type: DELETE_RECORD,
-              payload: { id: recordId },
-            });
-            navigate("/");
-          }}
-        />
+        {record.userId === user.id ? (
+          <>
+            <Button text="수정" handleClick={handleUpdate} />
+            <Button text="삭제" handleClick={() => handleDelete(record)} />
+          </>
+        ) : (
+          ""
+        )}
         <Button text="뒤로가기" handleClick={() => history.back()} />
       </div>
     </DetailPageWrapper>

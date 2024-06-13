@@ -5,15 +5,16 @@ import useLoginStore from "../zustand/useLoginStore";
 import { HeaderGuest } from "./HeaderGuest";
 
 function Header() {
-  const user = useLoaderData();
-  const { logIn, logOut } = useLoginStore((state) => state);
+  const loadUser = useLoaderData();
+  const { logIn, logOut, user: loginedUser } = useLoginStore((state) => state);
 
   useEffect(() => {
-    if (user) {
-      logIn(user);
+    if (loadUser) {
+      logIn(loadUser);
     }
   }, []);
 
+  const user = loadUser || loginedUser;
   if (!user) {
     return <HeaderGuest />;
   }

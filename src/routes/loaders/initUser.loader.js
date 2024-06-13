@@ -11,6 +11,7 @@ export async function initUserLoader() {
     .getUserInfo(token)
     .then((user) => ({ ...user, accessToken: token }))
     .catch((e) => {
+      LocalStorage.set(KEY._03_ACCESS_TOKEN, "");
       console.error(e);
       return null;
     });

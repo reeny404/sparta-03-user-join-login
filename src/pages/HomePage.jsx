@@ -1,10 +1,11 @@
-import { useCallback, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import { v4 as UUID_v4 } from "uuid";
 import { Input } from "../components/Input";
 import { RecordList } from "../components/RecordList";
 import { ADD_RECORD } from "../redux/reducers/spendings.reducer";
 import LocalStorage, { KEY } from "../utils/LocalStorage";
+import useLoginStore from "../zustand/useLoginStore";
 import {
   HomePageWrppaer,
   SectionCashRecords,
@@ -21,9 +22,9 @@ export function HomePage() {
   const [month, setMonth] = useState(Number(LocalStorage.get(KEY._02_MONTH)));
 
   const dispatch = useDispatch();
-  const { user } = useSelector((state) => state.auth);
+  const user = useLoginStore((state) => state.user);
 
-  const handleSaveRecord = useCallback(() => {
+  const handleSaveRecord = () => {
     if (!item || !amount) {
       alert("유효한 항목, 금액을 입력해주세요.");
       return;
@@ -44,7 +45,7 @@ export function HomePage() {
     setItem("");
     setAmount("");
     setDescription("");
-  }, [user]);
+  };
 
   useEffect(() => {
     LocalStorage.set(KEY._02_MONTH, month);

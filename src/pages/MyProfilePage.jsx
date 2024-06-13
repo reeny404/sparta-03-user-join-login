@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { useSelector } from "react-redux";
 import userAPI from "../api/user.api";
+import useLoginStore from "../zustand/useLoginStore";
 
 function MyProfilePage() {
-  const { user } = useSelector((state) => state.auth);
+  const { user } = useLoginStore((state) => state.user);
   const refName = useRef();
   const [img, setImg] = useState("");
 

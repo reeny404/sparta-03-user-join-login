@@ -1,16 +1,13 @@
 import { useCallback, useRef } from "react";
-import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import userAPI from "../api/user.api";
-import { logIn } from "../redux/reducers/auth.reducer";
-import LocalStorage, { KEY } from "../utils/LocalStorage";
+import useLoginStore from "../zustand/useLoginStore";
 
 function SignInPage() {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const logIn = useLoginStore((state) => state.logIn);
   const refId = useRef();
   const refPw = useRef();
-  // const dispatch = useDispatch();
 
   const validate = useCallback((id, pw) => {
     if (!id) {
@@ -32,9 +29,7 @@ function SignInPage() {
     userAPI
       .signIn(id, pw)
       .then((user) => {
-        LocalStorage.set(KEY._03_ACCESS_TOKEN, user.accessToken);
-        const action = logIn({ ...user, id: user.userId });
-        dispatch(action);
+        logIn({ ...user, id: user.userId });
         navigate("/");
       })
       .catch((error) => {

@@ -42,17 +42,49 @@ function SignUpPage() {
   };
 
   return (
-    <div className="flex flex-col justify-center items-center">
-      <span>회원가입</span>
-      <span>아이디</span>
-      <input ref={refId} placeholder="아이디" />
-      <span>비밀번호</span>
-      <input ref={refPw} placeholder="비밀번호" type="password" />
-      <span>닉네임</span>
-      <input ref={refNickName} placeholder="닉네임" />
-      <button onClick={handleSignUp}>회원가입</button>
-      <Link to="/signIn">로그인</Link>
-      <h1 className="text-3xl font-bold underline">Hello world!</h1>
+    <div className="flex flex-col justify-center items-center bg-white rounded w-3/5 m-auto p-5">
+      <h3 className="font-bold text-lg">회원가입</h3>
+      <label className="w-full text-xs text-left font-bold" htmlFor="InputId">
+        아이디
+      </label>
+      <input
+        autoFocus
+        id="InputId"
+        ref={refId}
+        className="w-full border-b-2 indent-1 p-1 mb-2 outline-none"
+      />
+      <label className="w-full text-xs text-left font-bold" htmlFor="InputPw">
+        비밀번호
+      </label>
+      <input
+        id="InputPw"
+        ref={refPw}
+        type="password"
+        className="w-full border-b-2 indent-1 p-1 mb-2 outline-none"
+      />
+      <label
+        className="w-full text-xs text-left font-bold"
+        htmlFor="InputNickName"
+      >
+        닉네임
+      </label>
+      <input
+        id="InputNickName"
+        ref={refNickName}
+        className="w-full border-b-2 indent-1 p-1 mb-2 outline-none"
+      />
+      <button
+        onClick={handleSignUp}
+        className="w-full rounded bg-gray-600 text-white p-1 m-1"
+      >
+        회원가입
+      </button>
+      <Link
+        to="/signIn"
+        className="w-full rounded bg-gray-400 text-white p-1 m-1 text-center"
+      >
+        로그인
+      </Link>
     </div>
   );
 }

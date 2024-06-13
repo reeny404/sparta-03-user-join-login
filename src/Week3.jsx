@@ -8,7 +8,7 @@ export default function Week3() {
   return (
     <main
       id="Week3"
-      className="w-full h-full min-h-[100vh] bg-[#8aa6a3] p-4 box-border"
+      className="w-full h-full min-h-[100vh] bg-[#8aa6a3] box-border"
     >
       <Provider store={store}>
         <RouterProvider router={router} />

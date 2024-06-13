@@ -1,0 +1,21 @@
+import userAPI from "../api/user.api";
+import LocalStorage, { KEY } from "../utils/LocalStorage";
+
+export async function initUserLoader() {
+  const token = LocalStorage.get(KEY._03_ACCESS_TOKEN);
+  if (!token) {
+    return null;
+  }
+
+  const user = await userAPI
+    .getUserInfo(token)
+    .then((response) => {
+      return response;
+    })
+    .catch((e) => {
+      LocalStorage.set(KEY._03_ACCESS_TOKEN, "");
+      throw e;
+    });
+
+  return user;
+}

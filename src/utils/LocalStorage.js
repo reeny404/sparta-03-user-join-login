@@ -1,6 +1,7 @@
 export const KEY = {
   _00_ACTIVE_WEEK: "00-active-week",
   _02_MONTH: "02-cashbook-month",
+  _03_ACCESS_TOKEN: "03-user-token",
 };
 
 class LocalStorage {

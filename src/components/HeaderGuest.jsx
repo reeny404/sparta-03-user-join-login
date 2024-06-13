@@ -7,7 +7,7 @@ export function HeaderGuest() {
 
   useEffect(() => {
     navigate("/signIn");
-  }, []);
+  }, [location.pathname]);
 
   return (
     <header className="w-full bg-gray-700 text-white px-4 py-3 flex flex-row box-border justify-center items-center">

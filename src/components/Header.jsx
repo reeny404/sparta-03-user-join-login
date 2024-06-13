@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { useLoaderData } from "react-router";
 import { Link } from "react-router-dom";
 import useLoginStore from "../zustand/useLoginStore";
@@ -7,6 +7,10 @@ import { HeaderGuest } from "./HeaderGuest";
 function Header() {
   const loadUser = useLoaderData();
   const { logIn, logOut, user: loginedUser } = useLoginStore((state) => state);
+  const handleLogOut = useCallback(() => {
+    logOut();
+    location.reload();
+  }, []);
 
   useEffect(() => {
     if (loadUser) {
@@ -35,7 +39,7 @@ function Header() {
           {user.nickname}
         </span>
         <button
-          onClick={logOut}
+          onClick={handleLogOut}
           className="rounded bg-red-500 py-1.5 px-2 text-sm ml-4"
         >
           로그아웃

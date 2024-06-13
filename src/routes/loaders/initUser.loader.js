@@ -1,5 +1,5 @@
-import userAPI from "../api/user.api";
-import LocalStorage, { KEY } from "../utils/LocalStorage";
+import userAPI from "../../api/user.api";
+import LocalStorage, { KEY } from "../../utils/LocalStorage";
 
 export async function initUserLoader() {
   const token = LocalStorage.get(KEY._03_ACCESS_TOKEN);
@@ -11,8 +11,8 @@ export async function initUserLoader() {
     .getUserInfo(token)
     .then((user) => ({ ...user, accessToken: token }))
     .catch((e) => {
-      LocalStorage.set(KEY._03_ACCESS_TOKEN, "");
-      throw e;
+      console.error(e);
+      return null;
     });
 
   return user;

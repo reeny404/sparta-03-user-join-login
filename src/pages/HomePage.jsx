@@ -16,7 +16,6 @@ import {
 export function HomePage() {
   const refInputs = useRef([]);
   const intialRecord = { date: new Date().toISOString().slice(0, 10) };
-
   const [month, setMonth] = useState(Number(LocalStorage.get(KEY._02_MONTH)));
   const [records, setRecords] = useState([]);
 

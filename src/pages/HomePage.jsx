@@ -54,15 +54,14 @@ export function HomePage() {
       return;
     }
 
-    expenseApi.add(
-      {
-        date: refs.current[0].value,
-        item,
-        amount,
-        description: refs.current[3].value,
-      },
-      user
-    );
+    const newRecord = {
+      date: refs.current[0].value,
+      item,
+      amount,
+      description: refs.current[3].value,
+    };
+    expenseApi.add(newRecord, user);
+    setRecords([...records, newRecord]);
   };
 
   return (

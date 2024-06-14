@@ -4,8 +4,8 @@ import { Record } from "./Record";
 export function RecordList({ list }) {
   return (
     <StyleList>
-      {list.map((record) => (
-        <li key={record.id}>
+      {list.map((record, i) => (
+        <li key={i}>
           <Record record={record} />
         </li>
       ))}

@@ -5,7 +5,7 @@ class ExpenseAPI {
   #client;
   constructor() {
     this.#client = axios.create({
-      baseURL: "https://rumbling-chill-saxophone.glitch.me/expenses",
+      baseURL: "https://atom-wandering-fine.glitch.me/expenses",
     });
   }
 

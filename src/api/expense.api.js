@@ -4,7 +4,9 @@ import { v4 as uuid } from "uuid";
 class ExpenseAPI {
   #client;
   constructor() {
-    this.#client = axios.create({ baseURL: "http://localhost:5000/expenses" });
+    this.#client = axios.create({
+      baseURL: "https://rumbling-chill-saxophone.glitch.me/expenses",
+    });
   }
 
   async getList() {

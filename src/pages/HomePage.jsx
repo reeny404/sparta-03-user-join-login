@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useEffect, useRef, useState } from "react";
 import expenseApi from "../api/expense.api";
 import RecordForm from "../components/RecordForm";
@@ -45,6 +45,10 @@ export function HomePage() {
     );
   }, [month]);
 
+  const { mutateAsync: addRecord } = useMutation({
+    mutationFn: (record, user) => expenseApi.add(record, user),
+  });
+
   const handleSaveRecord = (refs) => {
     const item = refs.current[1].value;
     const amount = refs.current[2].value;
@@ -60,8 +64,12 @@ export function HomePage() {
       amount,
       description: refs.current[3].value,
     };
-    expenseApi.add(newRecord, user);
-    setRecords([...records, newRecord]);
+    addRecord(newRecord, user)
+      .then(() => setRecords([...records, newRecord]))
+      .catch((e) => {
+        console.error(e);
+        alert("새로고침 후 재시도 해주세요.");
+      });
   };
 
   return (

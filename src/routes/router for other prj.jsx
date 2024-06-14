@@ -7,29 +7,30 @@ import SignInPage from "../pages/SignInPage";
 import SignUpPage from "../pages/SignUpPage";
 import { initUserLoader } from "./loaders/initUser.loader";
 
+// 타 프로젝트에서 import 해서 쓸 때 바꿔서 쓸 사본
 const router = createBrowserRouter([
   {
     element: <DefaultLayout />,
     loader: initUserLoader,
     children: [
       {
-        path: "/",
+        path: "/assign-react-js/",
         element: <HomePage />,
       },
       {
-        path: "/detail/:recordId",
+        path: "/assign-react-js/detail/:recordId",
         element: <DetailPage />,
       },
       {
-        path: "/signIn",
+        path: "/assign-react-js/signIn",
         element: <SignInPage />,
       },
       {
-        path: "/signUp",
+        path: "/assign-react-js/signUp",
         element: <SignUpPage />,
       },
       {
-        path: "/profile",
+        path: "/assign-react-js/profile",
         element: <MyProfilePage />,
       },
     ],
